@@ -5,22 +5,27 @@
 # TO_BUILD:       docker build -rm -t registry .
 # TO_RUN:         docker run -p 5000:5000 registry
 
-# Latest Ubuntu LTS
-FROM ubuntu:14.04
+# Latest Lemote
+FROM fedora28-base:28
 
 # Update
-RUN apt-get update \
+RUN dnf update -y \
 # Install pip
-    && apt-get install -y \
+    && dnf install -y \
         swig \
         python-pip \
+	gcc \
+	patch \
+	m2crypto \
+	compat-ffmpeg28 \
+	openssl-devel \
 # Install deps for backports.lzma (python2 requires it)
-        python-dev \
-        python-mysqldb \
+        python-devel \
+        #python-mysqldb \
         python-rsa \
-        libssl-dev \
-        liblzma-dev \
-        libevent1-dev \
+        #libssl-dev \
+	xz-devel \
+        libevent-devel \
     && rm -rf /var/lib/apt/lists/*
 
 COPY . /docker-registry
